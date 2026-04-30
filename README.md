@@ -1,10 +1,9 @@
-<img src="https://img.shields.io/badge/Hack_The_Box-CCTV-red?style=for-the-badge">
-
-<img src="https://img.shields.io/badge/Difficulty-Easy-green?style=for-the-badge">
-
-<img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge">
-
-<img src="https://img.shields.io/badge/Pwn_Date-April_2026-purple?style=for-the-badge">
+<p align="left">
+  <img src="https://img.shields.io/badge/Hack_The_Box-CCTV-red?style=for-the-badge&labelColor=black" />
+  <img src="https://img.shields.io/badge/Difficulty-Easy-green?style=for-the-badge&labelColor=black" />
+  <img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge&labelColor=black" />
+  <img src="https://img.shields.io/badge/Pwn_Date-April_2026-purple?style=for-the-badge&labelColor=black" />
+</p>
 
 # Hack The Box - CCTV Machine
 
