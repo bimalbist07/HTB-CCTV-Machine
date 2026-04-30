@@ -1,84 +1,86 @@
 <img src="https://img.shields.io/badge/Hack_The_Box-CCTV-red?style=for-the-badge">
-<img src="https://img.shields.io/badge/Difficulty-Easy-green?style=for-the-badge">
-<img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge">
-<img src="https://img.shields.io/badge/Pwn_Date-April_2026-purple?style=for-the-badge">
 
+<img src="https://img.shields.io/badge/Difficulty-Easy-green?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/OS-Linux-blue?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/Pwn_Date-April_2026-purple?style=for-the-badge">
 
 # Hack The Box - CCTV Machine
 
+## 📋 Executive Summary
+
+This penetration test successfully compromised the CCTV machine by chaining multiple vulnerabilities. The assessment began with external reconnaissance and resulted in full root access. The attack vector exploited weak authentication mechanisms, SQL injection, and command injection vulnerabilities.
+
 ## 🏆 Flags Captured
 
-| Flag | Value |
-|------|-------|
+| Flag | Hash |
+|------|------|
 | **User Flag** | `35485441621d3a1bf9b53966cf6e2d0` |
 | **Root Flag** | `69507708250a83de49358aee134c758f` |
 
 ## 🔴 Vulnerabilities Exploited
 
-| CVE | Description | Severity |
-|-----|-------------|----------|
-| CVE-2024-51482 | ZoneMinder Time-based Blind SQL Injection | High |
-| CVE-2025-60787 | motionEye OS Command Injection | High |
+| CVE | Component | Description | CVSS | Severity |
+|-----|-----------|-------------|------|----------|
+| CVE-2024-51482 | ZoneMinder | Time-based Blind SQL Injection in `tid` parameter | 7.5 | High |
+| CVE-2025-60787 | motionEye | OS Command Injection via Snapshot Filename field | 8.8 | High |
 
 ## 📋 Attack Chain
-Default Credentials (admin:admin)
-↓
-SQL Injection (CVE-2024-51482)
-↓
-Extracted User Hashes
-↓
-Password Cracking (opensesame)
-↓
-SSH Access as 'mark'
-↓
-Internal Enumeration (motionEye)
-↓
-SSH Tunneling
-↓
-Command Injection (CVE-2025-60787)
-↓
-🔴 ROOT Shell
-↓
-✅ Flags Captured
 
-text
+| Phase | Technique | Details |
+|-------|-----------|---------|
+| 1 | **Information Gathering** | Nmap scan revealed ports 22 (SSH) and 80 (HTTP) |
+| 2 | **Initial Access** | ZoneMinder authentication bypass using common credentials |
+| 3 | **Database Exploitation** | Time-based blind SQL injection (CVE-2024-51482) |
+| 4 | **Credential Extraction** | Dumped `zm.Users` table containing bcrypt hashes |
+| 5 | **Password Cracking** | John the Ripper cracked `mark` user hash |
+| 6 | **Lateral Movement** | SSH access established as user `mark` |
+| 7 | **Internal Reconnaissance** | Discovered motionEye service on localhost:8765 |
+| 8 | **Service Tunneling** | SSH port forwarding to access internal motionEye |
+| 9 | **Privilege Escalation** | OS command injection via motionEye (CVE-2025-60787) |
+| 10 | **Full Compromise** | Reverse shell obtained with root privileges |
+| 11 | **Objective Complete** | User and root flags captured |
 
 ## 🛠️ Tools Used
 
-| Tool | Purpose |
-|------|---------|
-| **Nmap** | Port scanning & reconnaissance |
-| **sqlmap** | SQL injection exploitation |
-| **John the Ripper** | Password hash cracking |
-| **SSH** | Remote access & tunneling |
-| **Netcat** | Reverse shell listener |
-| **curl** | HTTP requests & API interaction |
+| Category | Tools |
+|----------|-------|
+| **Reconnaissance** | Nmap |
+| **Web Exploitation** | sqlmap |
+| **Password Cracking** | John the Ripper |
+| **Lateral Movement** | SSH |
+| **Tunneling** | SSH Port Forwarding |
+| **Payload Delivery** | curl |
+| **Reverse Shell** | Netcat |
 
-## 📁 Files in this Repository
+## 📁 Repository Contents
 
-| File/Folder | Description |
-|-------------|-------------|
-| `Screenshots/` | 20+ evidence screenshots |
-| `PENETRATION TEST REPORT.pdf` | Full professional report |
+| Path | Description |
+|------|-------------|
+| `Screenshots/` | 20+ evidence screenshots documenting each phase |
+| `PENETRATION TEST REPORT.pdf` | Comprehensive professional report |
 
-## 📸 Screenshots Preview
+## 📸 Evidence
 
-All 20+ screenshots are available in the [`Screenshots/`](Screenshots) folder including:
-- Nmap scan results
-- ZoneMinder login and dashboard
-- SQL injection with sqlmap
+All screenshots are available in the [`Screenshots/`](Screenshots) directory, including:
+- Network reconnaissance and port scanning
+- Web application enumeration
+- SQL injection exploitation
+- Credential extraction and cracking
 - SSH access and internal enumeration
-- motionEye login and command injection
-- Reverse shell and root access
-- Flags captured
+- motionEye exploitation
+- Root shell capture
+- Flag extraction
 
-## ✅ Key Takeaways
+## ✅ Key Findings & Recommendations
 
-- **Default credentials** are extremely dangerous and should never persist
-- **SQL injection** can expose sensitive data even when blind
-- **Internal services** bound to localhost are not safe after SSH access
-- **Command injection** leads to full system compromise
-- Security requires **defense in depth**
+| Finding | Impact | Recommendation |
+|---------|--------|----------------|
+| Weak authentication credentials | Complete system access | Implement strong password policy |
+| SQL injection vulnerability | Database compromise | Use parameterized queries, update ZoneMinder |
+| Internal service exposure | Attack surface expansion | Restrict localhost services with firewall |
+| Command injection in motionEye | Root privilege escalation | Update motionEye, implement input validation |
 
 ## 🔗 Connect with Me
 
@@ -87,4 +89,4 @@ All 20+ screenshots are available in the [`Screenshots/`](Screenshots) folder in
 
 ---
 
-*This machine was completed as part of ethical hacking training on Hack The Box.*
+*This assessment was conducted on Hack The Box for educational purposes. All techniques demonstrated are part of authorized security testing.*
